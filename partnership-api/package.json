@@ -5,6 +5,8 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
+    "build:frontend": "cd ../partnership-app && npm install && npm run build",
+    "postinstall": "npx prisma generate",
     "start": "node src/index.js",
     "dev": "node --watch src/index.js"
   },
