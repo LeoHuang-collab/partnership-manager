@@ -27,10 +27,11 @@ app.use('/api/partners', partnerRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/todos', todoRoutes);
 
-app.use(express.static(path.join(__dirname, '../partnership-app/dist')));
+const distPath = path.join(__dirname, '../partnership-app/dist');
+app.use(express.static(distPath));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../partnership-app/dist/index.html'));
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
 const PORT = process.env.PORT || 3000;
