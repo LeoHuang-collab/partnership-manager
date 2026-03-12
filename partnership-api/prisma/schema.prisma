@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String
+  name      String
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  projects Project[]
+  partners Partner[]
+  reports  Report[]
+  todos    Todo[]
+}
+
+model Project {
+  id              String    @id @default(uuid())
+  name            String
+  location        String?
+  partnerId       String?
+  equityRatio     Float     @default(50)
+  totalInvestment Float     @default(0)
+  status          String    @default("筹备中")
+  startDate       DateTime?
+  endDate         DateTime?
+  createdBy       String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  partner  Partner? @relation(fields: [partnerId], references: [id])
+  creator  User?    @relation(fields: [createdBy], references: [id])
+  reports  Report[]
+  todos    Todo[]
+}
+
+model Partner {
+  id        String   @id @default(uuid())
+  name      String
+  type      String   @default("机构")
+  contacts  String   @default("[]")
+  createdBy String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  creator  User?    @relation(fields: [createdBy], references: [id])
+  projects Project[]
+}
+
+model Report {
+  id             String   @id @default(uuid())
+  projectId      String
+  reportDate     DateTime
+  period         String
+  progress       String?
+  difficulties   String?
+  matters        String?
+  overallStatus  String   @default("正常")
+  createdBy      String?
+  createdAt      DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id])
+  creator User?   @relation(fields: [createdBy], references: [id])
+}
+
+model Todo {
+  id                  String    @id @default(uuid())
+  projectId           String
+  task                String
+  blocker             String?
+  responsiblePerson   String?
+  planCompleteDate    DateTime?
+  actualCompleteDate  DateTime?
+  priority            String?
+  status              String    @default("进行中")
+  createdBy           String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id])
+  creator User?   @relation(fields: [createdBy], references: [id])
+}

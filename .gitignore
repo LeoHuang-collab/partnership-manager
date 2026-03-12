@@ -1,0 +1,8 @@
+node_modules/
+dist/
+partnership-api/node_modules/
+partnership-api/prisma/dev.db
+partnership-api/prisma/dev.db-journal
+.DS_Store
+*.log
+.env
