@@ -6,3 +6,4 @@ partnership-api/prisma/dev.db-journal
 .DS_Store
 *.log
 .env
+partnership-app/nul
